@@ -45,20 +45,28 @@ bool IsZero(double z)
     else
         return false;
 }
-void abcGet(struct equation * sq)
+error abcGet(struct equation * sq)
 {
+    int attempt = 0;
+
     while (scanf("%lf %lf %lf", &sq->aa, &sq->bb, &sq->cc) != 3)
     {
         skipLine();
-        printf("\033[91mInput error\033[0m. \033[91mEnter the values of the coefficients\033[0m"
-        " \033[93ma\033[0m, \033[94mb\033[0m, \033[95mc\033[0m \033[91musing numbers\033[0m:\n");
-    }
-    assert (isfinite(sq->aa));
-    assert (isfinite(sq->bb));
-    assert (isfinite(sq->cc));
 
-    printf("\033[92mThe values are accepted\033[0m: \033[93ma\033[0m = %lg;"
-    " \033[94mb\033[0m = %lg; \033[95mc\033[0m = %lg\n", sq->aa, sq->bb, sq->cc);
+        if(attempt >= 3)
+            return ERROR_INPUT;
+
+        printf(DRAW_TEXT(RED, "Input error. Enter the values of the coefficients a, b, c using numbers: "));
+
+        attempt++;
+    }
+    MYASSERT(isfinite(sq->aa));
+    MYASSERT(isfinite(sq->bb));
+    MYASSERT(isfinite(sq->cc));
+
+    printf(DRAW_TEXT(GREEN, "The values are accepted: a = %lg; b = %lg; c = %lg\n"), sq->aa, sq->bb, sq->cc);
+
+    return NOT_ERROR;
 }
 void skipLine(void)
 {
@@ -69,15 +77,15 @@ void print_roots(struct equation * sq)
 {
         switch(sq->nnRoots)
     {
-        case ZER: printf("\033[92mThe equation has no roots\033[0m");
+        case ZER: printf(DRAW_TEXT(GREEN, "The equation has no roots\n"));
             break;
-        case ONE: printf("\033[92mThe equation has one root equal to\033[0m: %lg\n", sq->xx1);
+        case ONE: printf(DRAW_TEXT(GREEN, "The equation has one root equal to:") "%lg\n", sq->xx1);
             break;
-        case TWO: printf("\033[92mThe equation has two roots\033[0m: x1 = %lg x2 = %lg\n\033[0m", sq->xx1, sq->xx2);
+        case TWO: printf(DRAW_TEXT(GREEN, "The equation has two roots:") "x1 = %lg x2 = %lg\n", sq->xx1, sq->xx2);
             break;
-        case INF: printf("\033[92mThe equation has infinitely many solutions\033[0m");
+        case INF: printf(DRAW_TEXT(GREEN, "The equation has infinitely many solutions\n"));
             break;
-        default : printf("\033[91mError, impossible number of roots\033[0m");
+        default : printf(DRAW_TEXT(RED, "Error, impossible number of roots\n"));
             break;
     }
 }
@@ -113,9 +121,9 @@ void Tester(void)
                 compare_doubles(square[nTest].xx2, x2Required) == 0 ||
                 square[nTest].nnRoots != nRootsRequired)
             {
-                printf("\033[91mThe test\033[0m №%d \033[91mfound an error\033[0m:"
+                printf(DRAW_TEXT(RED, "The test №%d found an error:")
                 " a = %lg; b = %lg; c = %lg; x1 = %lg; x2 = %lg; nRoots = %d\n"
-                "\033[91mRequired values\033[0m: x1 = %lg; x2 = %lg; nRoots = %d\n",
+                "Required values: x1 = %lg; x2 = %lg; nRoots = %d\n",
                 nTest, square[nTest].aa, square[nTest].bb, square[nTest].cc, square[nTest].xx1,
                 square[nTest].xx2, square[nTest].nnRoots, x1Required, x2Required, nRootsRequired);
                 break;
@@ -129,4 +137,24 @@ bool compare_doubles(double a, double b)
         return true;
     else
         return false;
+}
+
+void quit_check(char * quit)
+{
+    printf(DRAW_TEXT(BLUE, "Type [enter] to exit the program or any other character to contiune:\n"));
+    skipLine();
+    scanf("%c", quit);
+}
+void ErrorList(int nomber)
+{
+    switch(nomber)
+    {
+    case NOT_ERROR: printf(DRAW_TEXT(ORANGE, "No errors were found\n"));
+                break;
+    case ERROR_INPUT: printf(DRAW_TEXT(RED, "ERROR: The limit of input attempts has been exceeded\n"));
+                exit(1);
+                break;
+    default: printf(DRAW_TEXT(RED, "Unknown error\n"));
+                break;
+    }
 }

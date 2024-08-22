@@ -12,14 +12,23 @@ int main(void)
 
     Tester();
 
-    printf("\033[92mEnter the coefficients of the quadratic equation "
-    "\033[93ma\033[0m, \033[94mb\033[0m, \033[95mc\033[0m:\n\033[0m");
+    char quit;
+    do
+    {
+    printf(DRAW_TEXT(GREEN, "Enter the coefficients of the quadratic equation a, b, c: "));
 
-    abcGet(&square);
+    error error = NOT_ERROR;
+
+    error = abcGet(&square);
+
+    ErrorList(error);
 
     SolveSquare(&square);
 
     print_roots(&square);
 
+    quit_check(&quit);
+
+    } while (quit != '\n');
     return 0;
 }
