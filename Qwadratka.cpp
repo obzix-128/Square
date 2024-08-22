@@ -1,11 +1,10 @@
-#include<TXLib.h>      /*@file Qwadratka.cpp */
+/*@file Qwadratka.cpp */
 #include<stdio.h>
 #include<math.h>
 #include<assert.h>
 #include<stdbool.h>
 
-/**@brief Необходимо для обозначения кол-ва корней квадратного уравнения, INF обозначает бесконечность.
-
+/**@brief РќРµРѕР±С…РѕРґРёРјРѕ РґР»СЏ РѕР±РѕР·РЅР°С‡РµРЅРёСЏ РєРѕР»-РІР° РєРѕСЂРЅРµР№ РєРІР°РґСЂР°С‚РЅРѕРіРѕ СѓСЂР°РІРЅРµРЅРёСЏ, INF РѕР±РѕР·РЅР°С‡Р°РµС‚ Р±РµСЃРєРѕРЅРµС‡РЅРѕСЃС‚СЊ.
 */
 enum nRoot{
     ZER = 0,
@@ -15,7 +14,7 @@ enum nRoot{
 };
 
 /**@brief
-    Тип структур для хранения коэффициентов, корней и кол-ва корней квадратного уравнения.
+    РўРёРї СЃС‚СЂСѓРєС‚СѓСЂ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ, РєРѕСЂРЅРµР№ Рё РєРѕР»-РІР° РєРѕСЂРЅРµР№ РєРІР°РґСЂР°С‚РЅРѕРіРѕ СѓСЂР°РІРЅРµРЅРёСЏ.
 */
 struct equation{
     double aa;
@@ -25,42 +24,41 @@ struct equation{
     double xx2;
     nRoot nnRoots;
 };
-/**@brief Константа равная ASCII коду <Ctrl+Z>.*/
+/**@brief РљРѕРЅСЃС‚Р°РЅС‚Р° СЂР°РІРЅР°СЏ ASCII РєРѕРґСѓ <Ctrl+Z>.*/
 const int winEOF = 26;
 
-/**@brief Функция для вычисления корней уравнения.*/
+/**@brief Р¤СѓРЅРєС†РёСЏ РґР»СЏ РІС‹С‡РёСЃР»РµРЅРёСЏ РєРѕСЂРЅРµР№ СѓСЂР°РІРЅРµРЅРёСЏ.*/
 void SolveSquare(struct equation *);
 
 /**
-* @brief Функция для считывания введёных данных.
-* @param [in] struct equation ptr
+* @brief Р¤СѓРЅРєС†РёСЏ РґР»СЏ СЃС‡РёС‚С‹РІР°РЅРёСЏ РІРІРµРґС‘РЅС‹С… РґР°РЅРЅС‹С….
 */
 void abcGet(struct equation *);
 
-/**@brief Функция для очистки буфера в случае неверного ввода.*/
+/**@brief Р¤СѓРЅРєС†РёСЏ РґР»СЏ РѕС‡РёСЃС‚РєРё Р±СѓС„РµСЂР° РІ СЃР»СѓС‡Р°Рµ РЅРµРІРµСЂРЅРѕРіРѕ РІРІРѕРґР°.*/
 void skipLine(void);
 
-/**@brief Функция, определяющая является ли число типа double равным нулю.*/
+/**@brief Р¤СѓРЅРєС†РёСЏ, РѕРїСЂРµРґРµР»СЏСЋС‰Р°СЏ СЏРІР»СЏРµС‚СЃСЏ Р»Рё С‡РёСЃР»Рѕ С‚РёРїР° double СЂР°РІРЅС‹Рј РЅСѓР»СЋ.*/
 bool IsZero(double);
 
-/**@brief Функция для вывода результата вычислений на экран.*/
+/**@brief Р¤СѓРЅРєС†РёСЏ РґР»СЏ РІС‹РІРѕРґР° СЂРµР·СѓР»СЊС‚Р°С‚Р° РІС‹С‡РёСЃР»РµРЅРёР№ РЅР° СЌРєСЂР°РЅ.*/
 void print_roots(struct equation *);
 
-/**@brief Функция, проверяющая правильность вычислений функции SolveSquare.*/
+/**@brief Р¤СѓРЅРєС†РёСЏ, РїСЂРѕРІРµСЂСЏСЋС‰Р°СЏ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІС‹С‡РёСЃР»РµРЅРёР№ С„СѓРЅРєС†РёРё SolveSquare.*/
 void Tester(void);
 
-/**@brief Функция, определяющая равны ли два числа типа double.*/
+/**@brief Р¤СѓРЅРєС†РёСЏ, РѕРїСЂРµРґРµР»СЏСЋС‰Р°СЏ СЂР°РІРЅС‹ Р»Рё РґРІР° С‡РёСЃР»Р° С‚РёРїР° double.*/
 bool compare_doubles(double, double);
 
-/**@brief Главная функция.
-*@param square Структура в которой хранятся коэффициенты квадратного уравнения, его корни и их кол-во.
-*@return Прата сказал надо 0 вернуть.
+/**@brief @brief Р“Р»Р°РІРЅР°СЏ С„СѓРЅРєС†РёСЏ.
+*@param square РЎС‚СЂСѓРєС‚СѓСЂР° РІ РєРѕС‚РѕСЂРѕР№ С…СЂР°РЅСЏС‚СЃСЏ РєРѕСЌС„С„РёС†РёРµРЅС‚С‹ РєРІР°РґСЂР°С‚РЅРѕРіРѕ СѓСЂР°РІРЅРµРЅРёСЏ, РµРіРѕ РєРѕСЂРЅРё Рё РёС… РєРѕР»-РІРѕ.
+*@return РџСЂР°С‚Р° СЃРєР°Р·Р°Р» РЅР°РґРѕ 0 РІРµСЂРЅСѓС‚СЊ.
 */
 int main(void)
 {
     struct equation square ={0, 0, 0, 0, 0, ZER};
 
-    printf("Введите коэффициенты квадратного уравнения a, b, c:\n");
+    printf("Р’РІРµРґРёС‚Рµ РєРѕСЌС„С„РёС†РёРµРЅС‚С‹ РєРІР°РґСЂР°С‚РЅРѕРіРѕ СѓСЂР°РІРЅРµРЅРёСЏ a, b, c:\n");
 
     abcGet(&square);
 
@@ -123,9 +121,9 @@ void abcGet(struct equation * sq)
     while (scanf("%lf %lf %lf", &sq->aa, &sq->bb, &sq->cc) != 3)
     {
         skipLine();
-        printf("Ошибка ввода. Введите значения коэффициентов a, b, c используя цифры:\n");
+        printf("РћС€РёР±РєР° РІРІРѕРґР°. Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёСЏ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ a, b, c РёСЃРїРѕР»СЊР·СѓСЏ С†РёС„СЂС‹:\n");
     }
-    printf("Значения приянты a = %lg; b = %lg; c = %lg\n", sq->aa, sq->bb, sq->cc);
+    printf("Р—РЅР°С‡РµРЅРёСЏ РїСЂРёСЏРЅС‚С‹ a = %lg; b = %lg; c = %lg\n", sq->aa, sq->bb, sq->cc);
 }
 void skipLine(void)
 {
@@ -136,35 +134,38 @@ void print_roots(struct equation * sq)
 {
         switch(sq->nnRoots)
     {
-        case ZER: printf("У уравнения нет корней");
+        case ZER: printf("РЈ СѓСЂР°РІРЅРµРЅРёСЏ РЅРµС‚ РєРѕСЂРЅРµР№");
             break;
-        case ONE: printf("У уравнения один корень равный: %lg\n", sq->xx1);
+        case ONE: printf("РЈ СѓСЂР°РІРЅРµРЅРёСЏ РѕРґРёРЅ РєРѕСЂРµРЅСЊ СЂР°РІРЅС‹Р№: %lg\n", sq->xx1);
             break;
-        case TWO: printf("У уравнения два корня: х1= %lg х2= %lg\n", sq->xx1, sq->xx2);
+        case TWO: printf("РЈ СѓСЂР°РІРЅРµРЅРёСЏ РґРІР° РєРѕСЂРЅСЏ: С…1= %lg С…2= %lg\n", sq->xx1, sq->xx2);
             break;
-        case INF: printf("У уравнения бесконечно много решений");
+        case INF: printf("РЈ СѓСЂР°РІРЅРµРЅРёСЏ Р±РµСЃРєРѕРЅРµС‡РЅРѕ РјРЅРѕРіРѕ СЂРµС€РµРЅРёР№");
             break;
-        default : printf("Ошибка, невозможное кол-во корней");
+        default : printf("РћС€РёР±РєР°, РЅРµРІРѕР·РјРѕР¶РЅРѕРµ РєРѕР»-РІРѕ РєРѕСЂРЅРµР№");
             break;
     }
 }
 void Tester(void)
 {
-    struct equation square[9] =
-    {{.aa = 0, .bb = 0,  .cc = 0,  .xx1 = 0,  .xx2 = 0,  .nnRoots = INF},
-    {.aa = -4, .bb = 0,  .cc = 0,  .xx1 = 0,  .xx2 = 0,  .nnRoots = ONE},
-    {.aa = 0,  .bb = -4, .cc = 0,  .xx1 = 0,  .xx2 = 0,  .nnRoots = ONE},
-    {.aa = 0,  .bb = 0,  .cc = -4, .xx1 = 0,  .xx2 = 0,  .nnRoots = ZER},
-    {.aa = -4, .bb = 4,  .cc = 0,  .xx1 = 1,  .xx2 = 0,  .nnRoots = TWO},
-    {.aa = 0,  .bb = -4, .cc = 4,  .xx1 = 1,  .xx2 = 0,  .nnRoots = ONE},
-    {.aa = -4, .bb = 0,  .cc = 4,  .xx1 = 1,  .xx2 = -1, .nnRoots = TWO},
-    {.aa = 0,  .bb = 0,  .cc = 0,  .xx1 = 0,  .xx2 = 0,  .nnRoots = INF},
-    {.aa = 1,  .bb = 2,  .cc = -3, .xx1 = -3, .xx2 = 1,  .nnRoots = TWO}};
+    const int COUNT = 10;
+
+    struct equation square[COUNT] =
+    {{.aa = 0,   .bb = 0,     .cc = 0,   .xx1 = 0,         .xx2 = 0,         .nnRoots = INF},
+    {.aa = -4,   .bb = 0,     .cc = 0,   .xx1 = 0,         .xx2 = 0,         .nnRoots = ONE},
+    {.aa = 0,    .bb = -4,    .cc = 0,   .xx1 = 0,         .xx2 = 0,         .nnRoots = ONE},
+    {.aa = 0,    .bb = 0,     .cc = -4,  .xx1 = 0,         .xx2 = 0,         .nnRoots = ZER},
+    {.aa = -4,   .bb = 4,     .cc = 0,   .xx1 = 1,         .xx2 = 0,         .nnRoots = TWO},
+    {.aa = 0,    .bb = -4,    .cc = 4,   .xx1 = 1,         .xx2 = 0,         .nnRoots = ONE},
+    {.aa = -4,   .bb = 0,     .cc = 4,   .xx1 = 1,         .xx2 = -1,        .nnRoots = TWO},
+    {.aa = 0,    .bb = 0,     .cc = 0,   .xx1 = 0,         .xx2 = 0,         .nnRoots = INF},
+    {.aa = 1,    .bb = 2,     .cc = -3,  .xx1 = -3,        .xx2 = 1,         .nnRoots = TWO},
+    {.aa = 1.5,  .bb = 2.56,  .cc = -34, .xx1 = -5.690155, .xx2 = 3.983488,  .nnRoots = TWO}};
     double x1Required = 0, x2Required = 0;
     nRoot nRootsRequired = ZER;
 
     int nTest;
-    for (nTest = 0; nTest < 9; nTest++)
+    for (nTest = 0; nTest < COUNT; nTest++)
     {
 
             x1Required = square[nTest].xx1;
@@ -177,9 +178,9 @@ void Tester(void)
                 compare_doubles(square[nTest].xx2, x2Required) == 0 ||
                 square[nTest].nnRoots != nRootsRequired)
             {
-                printf("Тест №%d обнаружил ошибку: a = %lg; b = %lg; c = %lg;"
+                printf("РўРµСЃС‚ в„–%d РѕР±РЅР°СЂСѓР¶РёР» РѕС€РёР±РєСѓ: a = %lg; b = %lg; c = %lg;"
                 "x1 = %lg; x2 = %lg; nRoots = %d\n"
-                "Требуемые значения: x1 = %lg; x2 = %lg; nRoots = %d\n",
+                "РўСЂРµР±СѓРµРјС‹Рµ Р·РЅР°С‡РµРЅРёСЏ: x1 = %lg; x2 = %lg; nRoots = %d\n",
                 nTest, square[nTest].aa, square[nTest].bb, square[nTest].cc, square[nTest].xx1,
                 square[nTest].xx2, square[nTest].nnRoots, x1Required, x2Required, nRootsRequired);
                 break;
