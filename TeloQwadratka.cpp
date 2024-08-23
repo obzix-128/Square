@@ -4,6 +4,7 @@ void SolveSquare(struct equation * sq)
 {
     if (IsZero(sq->aa))
     {
+
         if(IsZero(sq->bb))
         {
             sq->nnRoots = (IsZero(sq->cc))? INF : ZER;
@@ -15,6 +16,7 @@ void SolveSquare(struct equation * sq)
 
             MYASSERT(isfinite(sq->xx1));
         }
+
     }
     else
     {
