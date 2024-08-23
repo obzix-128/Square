@@ -1,20 +1,20 @@
-/**@file */
-
 #include "FunctionQwadratka.h"
 
-/**@brief @brief Главная функция.
-*@param square Структура в которой хранятся коэффициенты квадратного уравнения, его корни и их кол-во.
-*@return Прата сказал надо 0 вернуть.
+/**@brief The main function.
+*@param square The structure in which the
+* coefficients of a quadratic equation, its roots and their number are stored.
+*@return Prata said it is necessary to return 0.
 */
-int main(void)
+int main(int argc, char **argv)
 {
-    struct equation square ={NAN, NAN, NAN, 0, 0, ZER};
+    ChoiceMain(argc, argv);
 
-    Tester();
+    struct equation square ={NAN, NAN, NAN, NAN, NAN, ZER};
 
-    char quit;
+    char quit = '0';
     do
     {
+
     printf(DRAW_TEXT(GREEN, "Enter the coefficients of the quadratic equation a, b, c: "));
 
     error error = NOT_ERROR;
@@ -28,6 +28,9 @@ int main(void)
     print_roots(&square);
 
     quit_check(&quit);
+
+    if (quit != '\n')
+        skipLine();
 
     } while (quit != '\n');
     return 0;
