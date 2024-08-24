@@ -11,13 +11,19 @@ CC=g++
 
 all: hello
 
-hello: MainQwadratka.o TeloQwadratka.o
-	@$(CC) MainQwadratka.o TeloQwadratka.o $(FLAGS) -o do
+hello: Main.o Other.o SkipLine.o UserInteraction.o WorkWithDouble.o
+	@$(CC) Main.o Other.o SkipLine.o UserInteraction.o WorkWithDouble.o $(FLAGS) -o do
 
-MainQwadratka.o: MainQwadratka.cpp
-	@$(CC) -c MainQwadratka.cpp -o MainQwadratka.o
+Main.o: Main.cpp
+	@$(CC) -c Main.cpp -o Main.o
 
-TeloQwadratka.o: TeloQwadratka.cpp
-	@$(CC) -c TeloQwadratka.cpp -o TeloQwadratka.o
+Other.o: Other.cpp
+	@$(CC) -c Other.cpp -o Other.o
+SkipLine.o: SkipLine.cpp
+	@$(CC) -c SkipLine.cpp -o SkipLine.o
+UserInteraction.o: UserInteraction.cpp
+	@$(CC) -c UserInteraction.cpp -o UserInteraction.o
+WorkWithDouble.o: WorkWithDouble.cpp
+	@$(CC) -c WorkWithDouble.cpp -o WorkWithDouble.o
 clean:
 	@rm -rf *.o hello
