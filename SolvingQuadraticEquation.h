@@ -58,8 +58,13 @@ ErrorNumber fileSolveSquare(const char*);
 */
 void errorList(ErrorNumber);
 
+/**@brief A function for reading and writing values from a file "Test.txt ",
+*for the testingSolveSquare function
+*/
 ErrorNumber parseFile(Equation *square, int*);
 
+/**@brief A function for solving linear man
+*/
 double solvingLinearEquation(Equation *);
 
 #endif // SOLVINGQUADRATICEQUATION_H
