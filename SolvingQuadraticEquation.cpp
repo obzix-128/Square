@@ -7,19 +7,7 @@ void solveSquare(Equation *quadratic_equation)
 {
     if(isZero(quadratic_equation->a))
     {
-        if(isZero(quadratic_equation->b))
-        {
-            quadratic_equation->number_of_roots =
-            (isZero(quadratic_equation->c))? INFINITY_ROOTS : ZERO_ROOTS;
-        }
-        else
-        {
-            quadratic_equation->x1 = solvingLinearEquation(quadratic_equation->b,
-            quadratic_equation->c);
-            quadratic_equation->number_of_roots = ONE_ROOTS;
-
-            MYASSERT(isfinite(quadratic_equation->x1));
-        }
+    solvingLinearEquation(quadratic_equation);
     }
     else
     {
@@ -60,16 +48,25 @@ void solveSquare(Equation *quadratic_equation)
         quadratic_equation->x2 = 0;
 }
 
-double solvingLinearEquation(double b, double c)
+double solvingLinearEquation(Equation *equation)
 {
-    double x = 0;
-    x = -c / b;
-    return x;
+    if(isZero(equation->b))
+    {
+        equation->number_of_roots =
+        (isZero(equation->c))? INFINITY_ROOTS : ZERO_ROOTS;
+    }
+    else
+    {
+        equation->x1 = -equation->c / equation->b;
+        equation->number_of_roots = ONE_ROOTS;
+
+        MYASSERT(isfinite(equation->x1));
+    }
 }
 
 ErrorNumber fileSolveSquare(const char *argv)
 {
-    const int MAX_EQUATIONS = 5;
+    const int MAX_EQUATIONS = 10;
 
     struct Equation square = {};
     char row[LINE_LENGTH] = {};

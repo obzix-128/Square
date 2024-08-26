@@ -60,6 +60,6 @@ void errorList(ErrorNumber);
 
 ErrorNumber parseFile(Equation *square, int*);
 
-double solvingLinearEquation(double, double);
+double solvingLinearEquation(Equation *);
 
 #endif // SOLVINGQUADRATICEQUATION_H
