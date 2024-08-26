@@ -1,5 +1,6 @@
-#include "Other.h"
+#include "SolvingQuadraticEquation.h"
 #include "UserInteraction.h"
+#include "ErrorNumber.h"
 
 /**@brief The main function.
 *@param square The structure in which the
@@ -7,50 +8,59 @@
 *@return Prata said it is necessary to return 0.
 */
 
-int main(int argc, char **argv)
+int main(const int argc,const char **argv)
 {
-    if (argc < 2)
+    const int MIN_ARG_COUNT = 2;
+
+    if (argc < MIN_ARG_COUNT)
     {
-        printf("To work with the program, select a mode, to view the list of modes, "
-        "enter [-h] after the program name.");
+        printf(DRAW_TEXT(ORANGE, "To work with the program, select a mode, to "
+        "view the list of modes, enter [-h] after the program name."));
     }
+
+    ErrorNumber check_error = NOT_ERROR;
     for(int count = 1; argc > count; count++)
     {
-        ErrorNumber check_error = NOT_ERROR;
+        if (argv[count][0] != '-')
+        {
+            printf(DRAW_TEXT(ORANGE, "To work with the program, select a mode, to "
+            "view the list of modes, enter [-h] after the program name."));
+            return 0;
+        }
 
         switch (argv[count][1])
         {
             case 'h':
                 printf(DRAW_TEXT(ORANGE, "[-h] - Help with the program\n"
                 "[-t] - Start the program testing mode\n"
-                "[-s] - The standard operating mode of the program\n"
+                "[-s] - Enter the coefficients and solve the quadratic equation\n"
                 "[-f] - Use this flag and immediately after it write the name of the "
                 "file from which you want to take the coefficients "
                 "\"f coefficients.txt \"\n"));
                 break;
             case 't':
-                check_error = testing();
+                check_error = testingSolveSquare();
 
-                if(check_error != NOT_ERROR)
-                {
-                    errorList(check_error);
-                    return 0;
-                }
-                check_error = NOT_ERROR;
+                errorList(check_error);
 
-                printf(DRAW_TEXT(PURPLE, "Test done.\n"));
+                if(check_error == NOT_ERROR)
+                    printf(DRAW_TEXT(PURPLE, "Test done.\n"));
                 break;
             case 's':
-                standartStart();
+                check_error = startSolveSquare();
+
+                errorList(check_error);
                 break;
             case 'f':
-                fileSolveSquare(&argv[count+1]);
+                check_error = fileSolveSquare(argv[count+1]);
 
                 count++;
+                if(check_error != NOT_ERROR)
+                    errorList(check_error);
                 break;
             default :
-                printf("To work with the program, select a mode, to view the list of modes, "
-                "enter [-h] after the program name.");
+                printf(DRAW_TEXT(ORANGE, "To work with the program, select a mode, to "
+                "view the list of modes, enter [-h] after the program name."));
                 break;
         }
     }
