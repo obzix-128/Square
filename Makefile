@@ -10,25 +10,15 @@ FLAGS := -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equ
 CC := g++
 objects := $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 
-all: hello
+all: do.exe
 
-hello: $(objects)
-	@$(CC) $(objects) $(FLAGS) -o do
+# TODO build folder
 
-Main.o: Main.cpp
-	@$(CC) -c Main.cpp -o Main.o
+do.exe: $(objects)
+	@$(CC) $^ $(FLAGS) -o $@
 
-SolvingQuadraticEquation.o: SolvingQuadraticEquation.cpp
-	@$(CC) -c SolvingQuadraticEquation.cpp -o SolvingQuadraticEquation.o
-
-SkipLine.o: SkipLine.cpp
-	@$(CC) -c SkipLine.cpp -o SkipLine.o
-
-UserInteraction.o: UserInteraction.cpp
-	@$(CC) -c UserInteraction.cpp -o UserInteraction.o
-
-WorkWithDouble.o: WorkWithDouble.cpp
-	@$(CC) -c WorkWithDouble.cpp -o WorkWithDouble.o
+%.o: %.cpp
+	@$(CC) -c $^ $(FLAGS) -o $@
 
 clean:
-	@rm -rf *.o hello
+	@rm -rf *.o do

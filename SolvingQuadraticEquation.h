@@ -65,6 +65,6 @@ ErrorNumber parseFile(Equation *square, int*);
 
 /**@brief A function for solving linear man
 */
-double solvingLinearEquation(Equation *);
+void solvingLinearEquation(Equation *);
 
 #endif // SOLVINGQUADRATICEQUATION_H

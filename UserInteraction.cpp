@@ -15,12 +15,12 @@ void checkQuit(char *quit)
 
 ErrorNumber abcGet(Equation *quadratic_equation)
 {
-    MYASSERT(quadratic_equation != NULL);
+    MYASSERT((quadratic_equation != NULL));
 
     int attempt = 0;
 
     while (scanf("%lf %lf %lf", &quadratic_equation->a, &quadratic_equation->b,
-    &quadratic_equation->c) != 3)
+                                                        &quadratic_equation->c) != 3)
     {
         skipLine();
 
@@ -78,6 +78,7 @@ ErrorNumber startSolveSquare(void)
         ErrorNumber reading_status = abcGet(&square);
         if(reading_status != NOT_ERROR)
             return reading_status;
+
         solveSquare(&square);
         printRoots(&square);
         checkQuit(&quit);

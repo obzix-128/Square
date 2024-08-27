@@ -6,7 +6,7 @@
 #define ORANGE "\033[93m"
 #define GREEN "\033[92m"
 #define PURPLE "\033[95m"
-#define END "\033[0m"
-#define DRAW_TEXT(color, text) color text END
+#define END_COLOR "\033[0m"
+#define DRAW_TEXT(color, text) color text END_COLOR
 
 #endif // COLOR_H

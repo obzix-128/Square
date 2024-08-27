@@ -12,6 +12,9 @@ int main(const int argc,const char **argv)
 {
     const int MIN_ARG_COUNT = 2;
 
+    // color_printf(ORANGE, BOLD, "%d dfads %c", 4343, 'a'); // TODO variadic arguments
+    //                                                      // TODO read about vprintf
+
     if (argc < MIN_ARG_COUNT)
     {
         printf(DRAW_TEXT(ORANGE, "To work with the program, select a mode, to "
@@ -21,7 +24,7 @@ int main(const int argc,const char **argv)
     ErrorNumber check_error = NOT_ERROR;
     for(int count = 1; argc > count; count++)
     {
-        if (argv[count][0] != '-')
+        if(argv[count][0] != '-')
         {
             printf(DRAW_TEXT(ORANGE, "To work with the program, select a mode, to "
             "view the list of modes, enter [-h] after the program name."));
@@ -53,12 +56,12 @@ int main(const int argc,const char **argv)
                 break;
             case 'f':
                 check_error = fileSolveSquare(argv[count+1]);
-
                 count++;
+
                 if(check_error != NOT_ERROR)
                     errorList(check_error);
                 break;
-            default :
+            default:
                 printf(DRAW_TEXT(ORANGE, "To work with the program, select a mode, to "
                 "view the list of modes, enter [-h] after the program name."));
                 break;

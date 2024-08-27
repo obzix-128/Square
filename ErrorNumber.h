@@ -11,4 +11,4 @@ enum ErrorNumber{
     TEST_ERROR     = 4
 };
 
-#endif // ERRORNUMBER_H
+#endif // ERRORNUMBER_H // TODO: include folder source folder

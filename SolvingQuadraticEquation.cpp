@@ -7,17 +7,17 @@ void solveSquare(Equation *quadratic_equation)
 {
     if(isZero(quadratic_equation->a))
     {
-    solvingLinearEquation(quadratic_equation);
+        solvingLinearEquation(quadratic_equation);
     }
     else
     {
         double d = quadratic_equation->b * quadratic_equation->b - 4 *
-        quadratic_equation->a * quadratic_equation->c;
+            quadratic_equation->a * quadratic_equation->c;
 
         if (isZero(d))
         {
-            quadratic_equation->x1 = quadratic_equation->x2 = -quadratic_equation->b /
-            (2 * quadratic_equation->a);
+            quadratic_equation->x1 = quadratic_equation->x2 =
+                    -quadratic_equation->b / (2 * quadratic_equation->a);
             quadratic_equation->number_of_roots = ONE_ROOTS;
 
             MYASSERT(isfinite(quadratic_equation->x1));
@@ -28,9 +28,9 @@ void solveSquare(Equation *quadratic_equation)
             double sqrt_d = sqrt (d);
 
             quadratic_equation->x1 = (-quadratic_equation->b - sqrt_d) /
-            (2 * quadratic_equation->a);
+                                     (2 * quadratic_equation->a);
             quadratic_equation->x2 = (-quadratic_equation->b + sqrt_d) /
-            (2 * quadratic_equation->a);
+                                     (2 * quadratic_equation->a);
 
             MYASSERT(isfinite(quadratic_equation->x1));
             MYASSERT(isfinite(quadratic_equation->x2));
@@ -48,7 +48,7 @@ void solveSquare(Equation *quadratic_equation)
         quadratic_equation->x2 = 0;
 }
 
-double solvingLinearEquation(Equation *equation)
+void solvingLinearEquation(Equation *equation)
 {
     if(isZero(equation->b))
     {
@@ -69,6 +69,7 @@ ErrorNumber fileSolveSquare(const char *argv)
     const int MAX_EQUATIONS = 10;
 
     struct Equation square = {};
+
     char row[LINE_LENGTH] = {};
 
     FILE *open_file = fopen(argv, "r");
@@ -76,12 +77,15 @@ ErrorNumber fileSolveSquare(const char *argv)
     {
         return READING_ERROR;
     }
+
     char *check_reading = fgets(row, LINE_LENGTH, open_file);
+
     if(check_reading == NULL)
     {
         fclose(open_file);
         return READING_ERROR;
     }
+
     int quantity = 0;
 
     int check = sscanf(row, "%d", &quantity);
@@ -90,10 +94,11 @@ ErrorNumber fileSolveSquare(const char *argv)
         fclose(open_file);
         return SCANNING_ERROR;
     }
+
     printf(DRAW_TEXT(ORANGE,"Solving equations from a file \"%s\"\n"), argv);
 
     for(int i = 0; fgets(row, LINE_LENGTH, open_file) != NULL && i < quantity &&
-    i < MAX_EQUATIONS; i++)
+                                                            i < MAX_EQUATIONS; i++)
     {
         check = sscanf(row, "%lf %lf %lf", &square.a, &square.b, &square.c);
         if(check == EOF)
@@ -117,6 +122,7 @@ ErrorNumber testingSolveSquare(void)
     int quantity_tests = 0;
 
     ErrorNumber check_error = parseFile(square, &quantity_tests);
+
     if (check_error != NOT_ERROR)
         return check_error;
 
@@ -125,30 +131,29 @@ ErrorNumber testingSolveSquare(void)
 
     for (int nTest = 0; nTest < MAXIMUM_TESTS && nTest < quantity_tests; nTest++)
     {
+        set_value_x1 = square[nTest].x1;
+        set_value_x2 = square[nTest].x2;
+        set_value_roots = square[nTest].number_of_roots;
 
-            set_value_x1 = square[nTest].x1;
-            set_value_x2 = square[nTest].x2;
-            set_value_roots = square[nTest].number_of_roots;
+        MYASSERT(isfinite(set_value_x1));
+        MYASSERT(isfinite(set_value_x2));
 
-            MYASSERT(isfinite(set_value_x1));
-            MYASSERT(isfinite(set_value_x2));
+        solveSquare(&square[nTest]);
 
-            solveSquare(&square[nTest]);
+        sortRoots(&set_value_x1, &set_value_x2);
+        sortRoots(&square[nTest].x1, &square[nTest].x2);
 
-            sortRoots(&set_value_x1, &set_value_x2);
-            sortRoots(&square[nTest].x1, &square[nTest].x2);
-
-            if (compareDoubles(square[nTest].x1, set_value_x1) == 0 ||
-                compareDoubles(square[nTest].x2, set_value_x2) == 0 ||
-                square[nTest].number_of_roots != set_value_roots)
-            {
-                fprintf(stderr, DRAW_TEXT(RED, "The test #%d found an error:")
-                " a = %lg; b = %lg; c = %lg; x1 = %lg; x2 = %lg; nRoots = %d\n"
-                "Required values: x1 = %lg; x2 = %lg; nRoots = %d\n",
-                nTest + 1, square[nTest].a, square[nTest].b, square[nTest].c, square[nTest].x1,
-                square[nTest].x2, square[nTest].number_of_roots, set_value_x1, set_value_x2, set_value_roots);
-                return TEST_ERROR;
-            }
+        if (compareDoubles(square[nTest].x1, set_value_x1) == 0 ||
+            compareDoubles(square[nTest].x2, set_value_x2) == 0 ||
+            square[nTest].number_of_roots != set_value_roots)
+        {
+            fprintf(stderr, DRAW_TEXT(RED, "The test #%d found an error:")
+            " a = %lg; b = %lg; c = %lg; x1 = %lg; x2 = %lg; nRoots = %d\n"
+            "Required values: x1 = %lg; x2 = %lg; nRoots = %d\n",
+            nTest + 1, square[nTest].a, square[nTest].b, square[nTest].c, square[nTest].x1,
+            square[nTest].x2, square[nTest].number_of_roots, set_value_x1, set_value_x2, set_value_roots);
+            return TEST_ERROR;
+        }
     }
     return NOT_ERROR;
 }
@@ -162,6 +167,7 @@ ErrorNumber parseFile(Equation *square, int *quantity_tests)
     {
         return READING_ERROR;
     }
+
     char *check_reading = fgets(row, LINE_LENGTH, open_file);
     if(check_reading == NULL)
     {
@@ -173,10 +179,11 @@ ErrorNumber parseFile(Equation *square, int *quantity_tests)
     {
         return SCANNING_ERROR;
     }
+
     for(int i = 0; fgets(row, LINE_LENGTH, open_file) != NULL && i < *quantity_tests; i++)
     {
-        check = sscanf(row, "%lf %lf %lf %lf %lf %d", &square[i].a,
-        &square[i].b, &square[i].c, &square[i].x1, &square[i].x2, &square[i].number_of_roots);
+        check = sscanf(row, "%lf %lf %lf %lf %lf %d", &square[i].a, &square[i].b,
+            &square[i].c, &square[i].x1, &square[i].x2, (int*)&square[i].number_of_roots);
         if(check == EOF)
         {
             return SCANNING_ERROR;
