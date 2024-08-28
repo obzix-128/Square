@@ -6,8 +6,7 @@ void checkQuit(char *quit)
 {
     printf(DRAW_TEXT(BLUE, "Type [enter] to exit the program or any other character to contiune:\n"));
 
-    int check_error = scanf("%c", quit);
-    MYASSERT(check_error);
+    scanf("%c", quit);
 
     if (*quit != '\n')
         skipLine();
@@ -17,10 +16,8 @@ ErrorNumber abcGet(Equation *quadratic_equation)
 {
     MYASSERT((quadratic_equation != NULL));
 
-    int attempt = 0;
-
-    while (scanf("%lf %lf %lf", &quadratic_equation->a, &quadratic_equation->b,
-                                                        &quadratic_equation->c) != 3)
+    for(int attempt = 0; scanf("%lf %lf %lf", &quadratic_equation->a, &quadratic_equation->b,
+                                                        &quadratic_equation->c) != 3; attempt++)
     {
         skipLine();
 
@@ -28,7 +25,6 @@ ErrorNumber abcGet(Equation *quadratic_equation)
             return ERROR_INPUT;
 
         printf(DRAW_TEXT(RED, "Input error. Enter the values of the coefficients a, b, c using numbers: "));
-        attempt++;
     }
 
     MYASSERT(isfinite(quadratic_equation->a));
@@ -38,7 +34,7 @@ ErrorNumber abcGet(Equation *quadratic_equation)
     skipLine();
 
     printf(DRAW_TEXT(GREEN, "The values are accepted: a = %lg; b = %lg; c = %lg\n"),
-    quadratic_equation->a, quadratic_equation->b, quadratic_equation->c);
+        quadratic_equation->a, quadratic_equation->b, quadratic_equation->c);
 
     return NOT_ERROR;
 }
@@ -95,10 +91,12 @@ void printRoots(Equation *quadratic_equation)
             printf(DRAW_TEXT(GREEN, "The equation has no roots\n"));
             break;
         case ONE_ROOTS:
-            printf(DRAW_TEXT(GREEN, "The equation has one root equal to: %lg\n"), quadratic_equation->x1); // TODO: отрицательный ноль
+            printf(DRAW_TEXT(GREEN, "The equation has one root equal to: %lg\n"),
+                quadratic_equation->x1);
             break;
         case TWO_ROOTS:
-            printf(DRAW_TEXT(GREEN, "The equation has two roots: x1 = %lg x2 = %lg\n"), quadratic_equation->x1, quadratic_equation->x2);
+            printf(DRAW_TEXT(GREEN, "The equation has two roots: x1 = %lg x2 = %lg\n"),
+                quadratic_equation->x1, quadratic_equation->x2);
             break;
         case INFINITY_ROOTS:
             printf(DRAW_TEXT(GREEN, "The equation has infinitely many solutions\n"));

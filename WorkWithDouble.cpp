@@ -23,6 +23,7 @@ void sortRoots(double *first_double,double *second_double)
     if(*first_double < *second_double)
     {
         double save_value = 0;
+
         save_value = *first_double;
         *first_double = *second_double;
         *second_double = save_value;

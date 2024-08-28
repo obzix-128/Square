@@ -52,8 +52,7 @@ void solvingLinearEquation(Equation *equation)
 {
     if(isZero(equation->b))
     {
-        equation->number_of_roots =
-        (isZero(equation->c))? INFINITY_ROOTS : ZERO_ROOTS;
+        equation->number_of_roots = (isZero(equation->c))? INFINITY_ROOTS : ZERO_ROOTS;
     }
     else
     {
@@ -171,12 +170,14 @@ ErrorNumber parseFile(Equation *square, int *quantity_tests)
     char *check_reading = fgets(row, LINE_LENGTH, open_file);
     if(check_reading == NULL)
     {
+        fclose(open_file);
         return READING_ERROR;
     }
 
     int check = sscanf(row, "%d", quantity_tests);
     if(check == EOF)
     {
+        fclose(open_file);
         return SCANNING_ERROR;
     }
 
@@ -186,6 +187,7 @@ ErrorNumber parseFile(Equation *square, int *quantity_tests)
             &square[i].c, &square[i].x1, &square[i].x2, (int*)&square[i].number_of_roots);
         if(check == EOF)
         {
+            fclose(open_file);
             return SCANNING_ERROR;
         }
     }
